@@ -18,7 +18,10 @@ for warninglist_file in glob(os.path.join(listPath, '*', 'list.json')):
     with open(warninglist_file, 'r') as f:
         lists.append(json.load(f))
 
+matches = []
 for warninglist in lists:
     tmp = WarningList(warninglist, True)
     if tmp.slowSearch(stringToSearch):
-        print warninglist['name']
+        matches.append(warninglist['name'])
+
+print json.dumps(matches)
