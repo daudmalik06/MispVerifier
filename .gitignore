@@ -1,1 +1,4 @@
 *.pyc
+test.sh
+out
+enabledLists.json
