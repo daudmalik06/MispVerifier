@@ -3,6 +3,7 @@
 
 import json
 from json import JSONEncoder
+import tldextract
 from ipaddress import ip_address, ip_network
 
 
@@ -73,7 +74,7 @@ class WarningList():
                 pass
         return to_return
 
-    def slowSearch(self, value):
+    def slowSearch(self, value, iocType):
         if self.type == 'string':
             # Exact match only, using fast search
             return self._fast_search(value)
@@ -81,11 +82,13 @@ class WarningList():
             # Expected to match on a part of the value
             # i.e.: value = 'blah.de' self.list == ['.fr', '.de']
             return any(v in value for v in self.list)
-        elif self.type == 'hostname':
-            # Expected to match on hostnames in URLs (i.e. the search query is a URL)
-            # So we do a reverse search if any of the entries in the list are present in the URL
-            # i.e.: value = 'http://foo.blah.de/meh' self.list == ['blah.de', 'blah.fr']
-            return any(v in value for v in self.list)
+        elif self.type == 'hostname' and iocType == 'hostname':
+            extracted_domain = tldextract.extract(value)
+            value = "{}.{}".format(extracted_domain.domain, extracted_domain.suffix)
+            for v in self.list:
+                if value in v:
+                    return True
+            return False
         elif self.type == 'cidr':
             try:
                 value = ip_address(u"{ip}".format(ip=value))
