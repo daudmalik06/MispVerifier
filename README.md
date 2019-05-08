@@ -6,12 +6,17 @@ Pythonic way to work with the warning lists defined there: https://github.com/MI
 # Installation
 pip install -r requirements.txt
 
+
+
 # to search for an entity in warning lists
 
-python search.py warningListFolder stringToSearch
+python search.py warningListFolder stringToSearch IOC_Type
 
 > warningListFolder will be downloaded from https://github.com/MISP/misp-warninglists
 
 e.g:    
   
-    python search.py ../misp-warninglists/lists youtube.com
+    python search.py ../misp-warninglists/lists youtube.com domain
+
+# Enabled Warning lists
+If you want to consider only few warning list you can do it by saving their names in **enabledLists.json**, to see the format please check **enabledLists.json.example** file.
