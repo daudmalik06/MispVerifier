@@ -3,8 +3,8 @@
 
 import json
 from json import JSONEncoder
-import tldextract
 from ipaddress import ip_address, ip_network
+import validators
 
 
 class EncodeWarningList(JSONEncoder):
@@ -83,12 +83,15 @@ class WarningList():
             # i.e.: value = 'blah.de' self.list == ['.fr', '.de']
             return any(v in value for v in self.list)
         elif self.type == 'hostname' and iocType == 'hostname':
-            extracted_domain = tldextract.extract(value)
-            value = "{}.{}".format(extracted_domain.domain, extracted_domain.suffix)
-            for v in self.list:
-                if value in v:
-                    return True
-            return False
+            if validators.domain(value):
+                for v in self.list:
+                    if value in v:
+                        return True
+                return False
+            else:
+                # The value to search isn't a host, falling back to default
+                return self._fast_search(value)
+
         elif self.type == 'cidr':
             try:
                 value = ip_address(u"{ip}".format(ip=value))
