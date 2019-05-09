@@ -10,13 +10,13 @@ pip install -r requirements.txt
 
 # to search for an entity in warning lists
 
-python search.py warningListFolder stringToSearch IOC_Type
+python search.py warningListFolder stringToSearch
 
 > warningListFolder will be downloaded from https://github.com/MISP/misp-warninglists
 
 e.g:    
   
-    python search.py ../misp-warninglists/lists youtube.com domain
+    python search.py ../misp-warninglists/lists youtube.com
 
 # Enabled Warning lists
 If you want to consider only few warning list you can do it by saving their names in **enabledLists.json**, to see the format please check **enabledLists.json.example** file.
