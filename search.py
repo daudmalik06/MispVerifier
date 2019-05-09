@@ -3,26 +3,24 @@ import sys
 import json
 import os
 from glob import glob
+import validators
 
-if len(sys.argv) < 4:
+if len(sys.argv) < 3:
   print("arguments are missing")
-  print "search.py pathToWarningLists stringToSearch IOC_TYPE"
-  print "search.py ../misp-warninglists/lists/ google.com domain"
+  print "search.py pathToWarningLists stringToSearch"
+  print "search.py ../misp-warninglists/lists/ google.com"
   sys.exit()
 
 
 listPath = os.path.abspath(sys.argv[1])
 stringToSearch = sys.argv[2].strip()
-iocType = sys.argv[3]
 
-if iocType == 'url':
-    sys.exit()
-
-if iocType == 'domain' or iocType == 'hostname':
+iocType = ''
+if validators.domain(stringToSearch):
     iocType = 'hostname'
-if iocType == 'ip':
-    iocType = 'cidr'
 
+if validators.ipv4(stringToSearch):
+    iocType = 'cidr'
 
 enabledListsFile = os.path.abspath('./enabledLists.json')
 enabledListsFileExists = os.path.isfile(enabledListsFile)
