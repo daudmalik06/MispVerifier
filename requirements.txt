@@ -1,2 +1,2 @@
 pymispwarninglists==0.2
-tldextract==2.2.1
+validators==0.12.6
