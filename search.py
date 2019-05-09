@@ -14,6 +14,7 @@ if len(sys.argv) < 3:
 
 listPath = os.path.abspath(sys.argv[1])
 stringToSearch = sys.argv[2].strip()
+root_dir = os.path.dirname(os.path.realpath(__file__))
 
 iocType = ''
 if validators.domain(stringToSearch):
@@ -22,7 +23,7 @@ if validators.domain(stringToSearch):
 if validators.ipv4(stringToSearch):
     iocType = 'cidr'
 
-enabledListsFile = os.path.abspath('./enabledLists.json')
+enabledListsFile = os.path.abspath(root_dir + '/enabledLists.json')
 enabledListsFileExists = os.path.isfile(enabledListsFile)
 
 enabledLists = []
